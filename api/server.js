@@ -11,7 +11,7 @@ wss.on("connection", function connection(ws) {
 
   for (const client of clients) {
     if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify({ tipo: "total", total: clients.size }));
+      client.send("total de pessoas conectadas:" + clients.size);
     }
   }
 
