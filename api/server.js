@@ -42,5 +42,10 @@ wss.on("connection", function connection(ws) {
   ws.on("close", () => {
     clients.delete(ws);
     console.log("Cliente desconectado. Total:", clients.size);
+    for (const client of clients) {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify({ tipo: "valor", valor: clients.size }));
+      }
+    }
   });
 });
