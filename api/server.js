@@ -17,13 +17,26 @@ wss.on("connection", function connection(ws) {
   }
 
   ws.on("message", function incoming(message) {
-    console.log("Mensagem recebida:", message.toString());
-
     // Envia para todos os clientes conectados
-    for (const client of clients) {
-      if (client !== ws && client.readyState === WebSocket.OPEN) {
-        client.send(message.toString());
+
+    try {
+      const data = JSON.parse(message);
+      if (data.tipo === "mensagem") {
+        for (const client of clients) {
+          if (client.readyState === WebSocket.OPEN) {
+            client.send(
+              JSON.stringify({
+                tipo: "mensagem",
+                texto: data.texto,
+                nome: data.nome, // envia o nome recebido do frontend
+              })
+            );
+          }
+        }
       }
+    } catch (err) {
+      // Trate mensagens não JSON normalmente
+      console.error("Erro ao processar mensagem:", err);
     }
   });
 
