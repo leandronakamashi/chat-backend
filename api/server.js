@@ -35,7 +35,6 @@ wss.on("connection", function connection(ws) {
         }
       }
     } catch (err) {
-      // Trate mensagens não JSON normalmente
       console.error("Erro ao processar mensagem:", err);
     }
   });
